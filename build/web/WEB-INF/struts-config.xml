@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
+
+
+<struts-config>
+    <form-beans>
+        <form-bean name="SearchBean" type="rcpl.SearchBean"/>
+        <form-bean name="FirstStream_Bean" type="rcpl.FirstStream_Bean"/>
+        <form-bean name="FilterBean" type="rcpl.FilterBean"/>
+                <form-bean name="LoginBean" type="rcpl.LoginBean"/>
+    
+    </form-beans>
+    
+    <global-exceptions>
+    
+    </global-exceptions>
+
+    <global-forwards>
+        <forward name="welcome"  path="/Welcome.do"/>
+    </global-forwards>
+
+    <action-mappings>
+         <action input="/Header.jsp" name="SearchBean" path="/log5" scope="session" type="rcpl.SearchAction"/>
+        <action input="/First_Stream.jsp" name="FirstStream_Bean" path="/log4" scope="session" type="rcpl.FirstStream_Action">
+            <forward name="E" path="main"/>
+            <forward name="M" path="/Medical.jsp"/>
+        </action>
+        <action path="/Welcome" forward="/welcomeStruts.jsp"/>
+        
+        <action input="/" name="LoginBean" path="/log2" scope="session" type="rcpl.LoginAction">
+            <forward name="i" path="/Login.jsp"></forward>
+             <forward name="j" path="/AfterLogin.jsp"></forward>
+             <forward name="login_fail" path="/Login.jsp"></forward>
+             
+        </action>
+        <action input="/AfterLogin.jsp" name="FilterBean" path="/log3" scope="session" type="rcpl.FilterAction">
+            <forward name="N" path="/Name.jsp"/>
+            <forward name="P" path="/Placement.jsp"/>
+             <forward name="R" path="/Ranking.jsp"/>
+              <forward name="S" path="/States.jsp"/>
+               <forward name="F" path="/Fees.jsp"/>
+        </action>
+       
+            </action-mappings>
+    
+    <controller processorClass="org.apache.struts.tiles.TilesRequestProcessor"/>
+
+    <message-resources parameter="com/myapp/struts/ApplicationResource"/>    
+    
+    <!-- ========================= Tiles plugin ===============================-->
+    <!--
+    This plugin initialize Tiles definition factory. This later can takes some
+    parameters explained here after. The plugin first read parameters from
+    web.xml, thenoverload them with parameters defined here. All parameters
+    are optional.
+    The plugin should be declared in each struts-config file.
+    - definitions-config: (optional)
+    Specify configuration file names. There can be several comma
+    separated file names (default: ?? )
+    - moduleAware: (optional - struts1.1)
+    Specify if the Tiles definition factory is module aware. If true
+    (default), there will be one factory for each Struts module.
+    If false, there will be one common factory for all module. In this
+    later case, it is still needed to declare one plugin per module.
+    The factory will be initialized with parameters found in the first
+    initialized plugin (generally the one associated with the default
+    module).
+    true : One factory per module. (default)
+    false : one single shared factory for all modules
+    - definitions-parser-validate: (optional)
+    Specify if xml parser should validate the Tiles configuration file.
+    true : validate. DTD should be specified in file header (default)
+    false : no validation
+
+    Paths found in Tiles definitions are relative to the main context.
+    -->
+    <plug-in className="org.apache.struts.tiles.TilesPlugin" >
+        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />      
+        <set-property property="moduleAware" value="true" />
+    </plug-in>
+    
+    <!-- ========================= Validator plugin ================================= -->
+    <plug-in className="org.apache.struts.validator.ValidatorPlugIn">
+        <set-property
+            property="pathnames"
+            value="/WEB-INF/validator-rules.xml,/WEB-INF/validation.xml"/>
+    </plug-in>
+  
+</struts-config>
